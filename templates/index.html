@@ -22,7 +22,7 @@
 						<ul>
 							<li><a href="#intro">Welcome</a></li>
 						{% for key, value in info.items() %}
-							<li><a href="#{{ key.display_name }}">{{ key.display_name }}</a></li>
+							<li><a href="#{{ key }}">{{ key }}</a></li>
 						{% endfor %}
 						</ul>
 					</nav>
@@ -42,20 +42,21 @@
 				{% for subreddit in info %}
 					<section id="{{ subreddit }}" class="wrapper style2 fade-up">
 					<div class="inner">
-						<h2 class="subreddit_title">{{ subreddit.display_name }}</h2>
-						<p>{{ subreddit.public_description }}</p>
+						<h2 class="subreddit_title">{{ subreddit }}</h2>
 						<div class="content">
 							<div class="inner">
 <!--							{{ console_log(info[subreddit]) }}-->
 							{% for comment in info[subreddit] %}
-								<h4 class="subreddit_title">THREAD NAME</h4>
+								<h4 class="thread_title">{{ comment.thread_title }}</h4>
+								{% if not comment.is_top_comment %}
+								<blockquote class="parent_comment">{{comment.parent_comment.body_html|safe}}</blockquote>
+								{% endif %}
+								<a href="{{ comment.link}}">
 								<p>{{ comment.body_html|safe }}</p>
+								</a>
 							{% endfor %}
 							</div>
 						</div>
-						<ul class="actions">
-							<li><a href="generic.html" class="button">Learn more</a></li>
-						</ul>
 					</div>
 				</section>
 				<hr>

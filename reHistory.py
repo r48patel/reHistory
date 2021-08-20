@@ -156,7 +156,7 @@ def get_comments_praw(user, debug=logging.INFO):
                 False,
                 None
             )
-            comment_is_top = True
+            comment_is_reply = True
 
         comment = Comment(
             comment.created_utc,
@@ -164,12 +164,11 @@ def get_comments_praw(user, debug=logging.INFO):
             comment.body,
             comment.body_html,
             comment.permalink,
-            comment_is_top,
+            comment_is_reply,
             comment_parent_comment
         )
         print("get_comments_praw.body_html: " + comment.body_html)
         subreddit_comments_dict[subreddit].append(comment)
-        # print("Finish:", datetime.datetime.now())
 
     if debug == logging.DEBUG:
         for subreddit in subreddit_comments_dict.keys():

@@ -48,7 +48,8 @@
 <!--							{{ console_log(info[subreddit]) }}-->
 							{% for comment in info[subreddit] %}
 								<h4>THREAD NAME</h4>
-								<p>{{ comment }}</p>
+								<p>{{ comment|safe }}</p>
+								<br/>
 							{% endfor %}
 							</div>
 						</div>
@@ -57,6 +58,7 @@
 						</ul>
 					</div>
 				</section>
+				<hr>
 				{% endfor %}
 			</div>
 

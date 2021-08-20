@@ -23,7 +23,7 @@ def user_comments(user, debug=False):
     subreddit_comments_dict = {}
     for comment in comments:
         subreddit_comments_dict.setdefault(comment.subreddit.display_name, [])
-        subreddit_comments_dict[comment.subreddit.display_name].append(comment.body)
+        subreddit_comments_dict[comment.subreddit.display_name].append(comment.body_html)
 
     if debug:
         for subreddit in subreddit_comments_dict.keys():

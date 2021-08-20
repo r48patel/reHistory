@@ -46,10 +46,9 @@
 						<h2 class="subreddit_title">{{ subreddit }}</h2>
 						<div class="content">
 							<div class="inner">
-<!--							{{ console_log(info[subreddit]) }}-->
 							{% for comment in info[subreddit] %}
 								<h4 class="thread_title">{{ comment.thread_title }}</h4>
-								{% if not comment.is_top_comment %}
+								{% if comment.is_reply %}
 								<blockquote class="parent_comment">{{comment.parent_comment.body_html|safe}}</blockquote>
 								{% endif %}
 								<a href="{{ comment.link}}">

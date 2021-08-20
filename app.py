@@ -10,13 +10,11 @@ test_data = {
 }
 
 
-@app.route("/")
-@app.route("/r48patel")
-def hello_world():
-    data = test_data
-    data = user_comments('r48patel')
-    print(data)
-    return render_template("index.html", user="r48patel", info=data)
+# @app.route("/")
+@app.route("/<user>")
+def hello_world(user):
+    data = user_comments(user)
+    return render_template("index.html", user=user, info=data)
 
 
 @app.context_processor

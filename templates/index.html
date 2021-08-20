@@ -10,6 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../static/assets/css/main.css" />
+		<link rel="stylesheet" href="../static/assets/css/custom.css" />
 		<noscript><link rel="stylesheet" href="../static/assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -21,7 +22,7 @@
 						<ul>
 							<li><a href="#intro">Welcome</a></li>
 						{% for key, value in info.items() %}
-							<li><a href="#{{ key }}">{{ key }}</a></li>
+							<li><a href="#{{ key.display_name }}">{{ key.display_name }}</a></li>
 						{% endfor %}
 						</ul>
 					</nav>
@@ -41,15 +42,14 @@
 				{% for subreddit in info %}
 					<section id="{{ subreddit }}" class="wrapper style2 fade-up">
 					<div class="inner">
-						<h2>{{ subreddit }}</h2>
-						<p>Some Info on: {{ subreddit }}</p>
+						<h2 class="subreddit_title">{{ subreddit.display_name }}</h2>
+						<p>{{ subreddit.public_description }}</p>
 						<div class="content">
 							<div class="inner">
 <!--							{{ console_log(info[subreddit]) }}-->
 							{% for comment in info[subreddit] %}
-								<h4>THREAD NAME</h4>
-								<p>{{ comment|safe }}</p>
-								<br/>
+								<h4 class="subreddit_title">THREAD NAME</h4>
+								<p>{{ comment.body_html|safe }}</p>
 							{% endfor %}
 							</div>
 						</div>

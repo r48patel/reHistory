@@ -6,7 +6,7 @@ import datetime
 import praw
 import logging
 
-LOGGING_LEVEL = logging.DEBUG
+LOGGING_LEVEL = logging.INFO
 
 handler = logging.StreamHandler()
 handler.setLevel(LOGGING_LEVEL)
@@ -122,6 +122,7 @@ def user_comments(user, debug=logging.INFO):
             print()
 
     return subreddit_comments_dict
+
 
 if __name__ == '__main__':
     user_comments('r48patel', debug=True)

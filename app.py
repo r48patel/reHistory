@@ -1,24 +1,25 @@
 #!/usr/bin/env python3.7
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash
 from reHistory import get_comments, get_comments_praw
 from forms import SearchForm
 import os
+from flask_wtf import CSRFProtect
 SECRET_KEY = os.urandom(32)
 
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def search():
     form = SearchForm()
-    if request.method == 'POST':
-        return redirect((url_for('user_comments', user=form.user.data)))
-    return render_template("welcome.html", title="reHistory", form=form)
-#     form = SearchForm()
-#     if request.method == 'POST' and form.validate_on_submit():
-#         return redirect((url_for('search_results', query=form.search.data)))  # or what you want
-#     return render_template('search.html', form=form)
+    is_validated = form.validate_on_submit()
+    if not is_validated:
+        for error in form.errors:
+            flash(f'Error: {form.errors[error][0]}', 'error')
+        return render_template("welcome.html", title="reHistory", form=form)
+    return redirect((url_for('user_comments', user=form.user.data)))
 
 
 @app.route("/<user>")

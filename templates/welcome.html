@@ -8,11 +8,19 @@
                 <section id="search" class="alt">
                     <h4>reHistory</h4>
                     <form method="POST" action="">
-<!--                        <fieldset>-->
-<!--                            {{ form.user }}-->
-<!---->
-<!--                        </fieldset>-->
-                        <input type="text" name="user" id="user" placeholder="Enter reddit username to search comment history" />
+                        {{ form.hidden_tag() }}
+                        <fieldset>
+                            {{ form.user }}
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }}">
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith%}
+                        </fieldset>
                     </form>
                 </section>
             </div>

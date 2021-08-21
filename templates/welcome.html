@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div id="wrapper">
+        <!-- Intro -->
+        <section id="intro" class="wrapper style1 fullscreen fade-up">
+            <div class="inner">
+                <!-- Search -->
+                <section id="search" class="alt">
+                    <h4>reHistory</h4>
+                    <form method="POST" action="">
+<!--                        <fieldset>-->
+<!--                            {{ form.user }}-->
+<!---->
+<!--                        </fieldset>-->
+                        <input type="text" name="user" id="user" placeholder="Enter reddit username to search comment history" />
+                    </form>
+                </section>
+            </div>
+        </section>
+
+    </div>
+{% endblock content %}

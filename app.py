@@ -8,6 +8,7 @@ from flask_wtf import CSRFProtect
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(32)
+app.config['WTF_CSRF_ENABLED'] = False
 csrf = CSRFProtect(app)
 
 
@@ -15,6 +16,8 @@ csrf = CSRFProtect(app)
 def search():
     form = SearchForm()
     is_validated = form.validate_on_submit()
+    # print(f"is_validated: {is_validated}. user: {form.user.data}")
+    # print(form.errors)
     if not is_validated:
         for error in form.errors:
             flash(f'Error: {form.errors[error][0]}', 'error')

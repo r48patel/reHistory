@@ -4,10 +4,10 @@ from reHistory import get_comments, get_comments_praw
 from forms import SearchForm
 import os
 from flask_wtf import CSRFProtect
-SECRET_KEY = os.urandom(32)
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(32)
 csrf = CSRFProtect(app)
 
 
@@ -38,5 +38,4 @@ def utility_functions():
 
 
 if __name__ == '__main__':
-    app.config['SECRET_KEY'] = SECRET_KEY
     app.run(debug=True)

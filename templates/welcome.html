@@ -3,25 +3,39 @@
     <div id="wrapper">
         <!-- Intro -->
         <section id="intro" class="wrapper style1 fullscreen fade-up">
+            <section id="spinner">
+                <div class="spinner-grow" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <br/>
+                <sup>This may take a while...</sup>
+            </section>
             <div class="inner">
                 <!-- Search -->
                 <section id="search" class="alt">
-                    <h4>reHistory</h4>
-                    <form method="POST" action="">
-                        {{ form.hidden_tag() }}
-                        <fieldset>
-                            {{ form.user }}
-                            {% with messages = get_flashed_messages(with_categories=true) %}
-                                {% if messages %}
-                                    {% for category, message in messages %}
-                                    <div class="alert alert-{{ category }}">
-                                        {{ message }}
+                        <h4>reHistory</h4>
+                        <form method="POST" action="">
+                            {{ form.hidden_tag() }}
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                    {{ form.user }}
                                     </div>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endwith%}
-                        </fieldset>
-                    </form>
+                                    <div class="col-sm-1">
+                                    {{ form.submit }}
+                                    </div>
+                                </div>
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                            <div class="alert alert-{{ category }}">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith%}
+                            </fieldset>
+                        </form>
                 </section>
             </div>
         </section>

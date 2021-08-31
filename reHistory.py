@@ -78,9 +78,6 @@ class Comment:
         self.is_reply = is_reply
         self.parent_comment = parent_comment
 
-        print(self.body)
-        print(self.body_html)
-
     def __str__(self):
         return "created: {}\n" \
                "thread_title: {}\n" \

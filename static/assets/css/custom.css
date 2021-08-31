@@ -2,12 +2,24 @@ h2.subreddit_title {
     margin: 0 0 0 0
 }
 
-h4.thread_title {
+h3.thread_title {
     margin: 0 0 0 0;
     color: #00c4ff;
 }
 
-blockquote.parent_comment {
+blockquote {
+    margin: 0 0 0 0;
+}
+
+pre.parent_comment {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    color: rgba(255, 255, 255, 0.55);
+    padding: 0 em;
     margin: 0 0 0 0;
 }
 

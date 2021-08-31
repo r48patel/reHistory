@@ -29,12 +29,14 @@
 				<div class="content">
 					<div class="inner">
 						{% for comment in info[subreddit] %}
-						<h4 class="thread_title">{{ comment.thread_title }}</h4>
+						<h3 class="thread_title">{{ comment.thread_title }}</h3>
 						{% if comment.is_reply %}
-						<blockquote class="parent_comment">{{comment.parent_comment.body_html|safe}}</blockquote>
+						<pre class="parent_comment">
+							<code>{{comment.parent_comment.get_comment().body_html|safe}}</code>
+						</pre>
 						{% endif %}
 						<a href="{{ comment.link}}">
-							<p>{{ comment.body_html|safe }}</p>
+							<p class="comment">{{ comment.body_html|safe }}</p>
 						</a>
 						{% endfor %}
 					</div>

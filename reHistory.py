@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.7
 import requests
+from requests_futures.sessions import FuturesSession
 from dotenv import load_dotenv
 from os import environ
 import datetime
@@ -43,6 +44,25 @@ class Subreddit:
     def __repr__(self):
         return self.display_name
 
+class ParentComment:
+    def __init__(self, url, comment_title):
+        self.url = url
+        self.comment_title = comment_title
+
+    def get_comment(self):
+        # print(self.url.result().json())
+        for result in self.url.result().json():
+            if result['data']['children'][0]['kind'] == 't1':
+                parent_comment_data = result['data']['children'][0]['data']
+                return Comment(
+                    parent_comment_data['created_utc'],
+                    self.comment_title,
+                    parent_comment_data['body'],
+                    parent_comment_data['body_html'],
+                    parent_comment_data['permalink'],
+                    False,
+                    None
+                )
 
 class Comment:
     def __init__(self, created, thread_title, body, body_html, link, is_reply, parent_comment):
@@ -57,6 +77,9 @@ class Comment:
         self.link = "https://www.reddit.com{}".format(link)
         self.is_reply = is_reply
         self.parent_comment = parent_comment
+
+        print(self.body)
+        print(self.body_html)
 
     def __str__(self):
         return "created: {}\n" \
@@ -74,6 +97,8 @@ class Comment:
 
 
 def get_comments(user, after=''):
+    start_time = datetime.datetime.now()
+    session = FuturesSession(max_workers=10)
     comments_list = []
     r = requests.get("https://www.reddit.com/user/{}/comments.json".format(user),
                      headers={'User-agent': "reHistory:v0.0 (by /u/r48patel at {})".format(datetime.datetime.now())},
@@ -93,20 +118,11 @@ def get_comments(user, after=''):
 
         if comment_parent_id.startswith('t1'):
             comment_is_reply = True
-            parent_comment = requests.get("{}{}.json".format(comment_link, comment_parent_id.replace('t1_', '')),
-                                          headers={'User-agent': "reHistory:v0.0 (by /u/r48patel)"})
-            for result in parent_comment.json():
-                if result['data']['children'][0]['kind'] == 't1':
-                    parent_comment_data = result['data']['children'][0]['data']
-                    comment_parent_comment = Comment(
-                        parent_comment_data['created_utc'],
-                        comment_title,
-                        parent_comment_data['body'],
-                        parent_comment_data['body_html'],
-                        parent_comment_data['permalink'],
-                        False,
-                        None
-                    )
+            url = f"{comment_link}{comment_parent_id.replace('t1_', '')}.json"
+            comment_parent_comment = ParentComment(
+                session.get(url, headers={'User-agent': "reHistory:v0.0 (by /u/r48patel)"}),
+                comment_title
+            )
 
         comment = Comment(
             comment_data['created_utc'],
@@ -130,6 +146,8 @@ def get_comments(user, after=''):
             else:
                 subreddit_comments_dict[subreddit] = after_dict[subreddit]
 
+    finish_time = datetime.datetime.now()
+    print(f"Total Time: {finish_time - start_time}")
     return subreddit_comments_dict
 
 

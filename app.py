@@ -25,7 +25,7 @@ def search():
     return redirect((url_for('user_comments', user=form.user.data)))
 
 
-@app.route("/<user>")
+@app.route("/user/<user>")
 def user_comments(user):
     # data = get_comments_praw(user)
     data = get_comments(user)

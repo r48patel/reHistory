@@ -60,6 +60,7 @@ class ParentComment:
                     parent_comment_data['name'],
                     parent_comment_data['created_utc'],
                     self.comment_title,
+                    None,
                     parent_comment_data['body'],
                     parent_comment_data['body_html'],
                     parent_comment_data['permalink'],
@@ -75,17 +76,18 @@ class ParentComment:
 
 
 class Comment:
-    def __init__(self, name, created, thread_title, body, body_html, link, is_reply, parent_comment):
+    def __init__(self, name, created, thread_title, thread_link, body, body_html, body_link, is_reply, parent_comment):
         self.name = name
         self.created = created
         self.thread_title = thread_title
+        self.thread_link = thread_link
         self.body = body
         self.body_html = html.unescape(body_html)\
             .replace('<p>', '')\
             .replace('</p>', '')\
             .replace('<div class="md">', '')\
             .replace('</div>', '')
-        self.link = "https://www.reddit.com{}".format(link)
+        self.body_link = "https://www.reddit.com{}".format(body_link)
         self.is_reply = is_reply
         self.parent_comment = parent_comment
 
@@ -136,6 +138,7 @@ def get_comments(user, after=''):
             comment_data['name'],
             comment_data['created_utc'],
             comment_title,
+            comment_data['link_permalink'],
             comment_data['body'],
             comment_data['body_html'],
             comment_data['permalink'],

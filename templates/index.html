@@ -29,7 +29,7 @@
 				<div class="content">
 					<div class="inner">
 						{% for comment in info[subreddit] %}
-						<h3 class="thread_title">{{ comment.thread_title }}</h3>
+						<h3 class="thread_title"><a href="{{ comment.thread_link }}">{{ comment.thread_title }}</a></h3>
 						{% if comment.is_reply %}
 						<div class="accordion accordion-flush" id="div-{{ comment.parent_comment.get_comment().name }}">
 							<div class="content">
@@ -46,7 +46,7 @@
 							</div>
 						</div>
 						{% endif %}
-						<a href="{{ comment.link}}">
+						<a href="{{ comment.body_link }}">
 							<p class="comment">{{ comment.body_html|safe }}</p>
 						</a>
 						{% endfor %}

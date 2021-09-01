@@ -5,24 +5,6 @@ import datetime
 import html
 
 
-class Subreddit:
-    def __init__(self, display_name, public_description):
-        self.display_name = display_name
-        self.public_description = public_description
-
-    def __hash__(self):
-        return hash((self.display_name, self.public_description))
-
-    def __eq__(self, other):
-        return (self.display_name, self.public_description) == (other.display_name, other.public_description)
-
-    def __str__(self):
-        return self.display_name
-
-    def __repr__(self):
-        return self.display_name
-
-
 class ParentComment:
     def __init__(self, url, comment_title):
         self.url = url

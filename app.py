@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.7
 from flask import Flask, render_template, redirect, url_for, flash
-from reHistory import get_comments, get_comments_praw
+from reHistory import get_comments
 from forms import SearchForm
 import os
 from flask_wtf import CSRFProtect
@@ -27,7 +27,6 @@ def search():
 
 @app.route("/user/<user>")
 def user_comments(user):
-    # data = get_comments_praw(user)
     data = get_comments(user)
     return render_template("index.html", title="{}'s Reddit Comments".format(user), user=user, info=data)
 

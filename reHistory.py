@@ -1,30 +1,8 @@
 #!/usr/bin/env python3.7
 import requests
 from requests_futures.sessions import FuturesSession
-from dotenv import load_dotenv
-from os import environ
 import datetime
-import praw
 import html
-import logging
-
-LOGGING_LEVEL = logging.INFO
-
-handler = logging.StreamHandler()
-handler.setLevel(LOGGING_LEVEL)
-for logger_name in ("praw", "prawcore", "urllib3.connectionpool"):
-    logger = logging.getLogger(logger_name)
-    logger.setLevel(LOGGING_LEVEL)
-    logger.addHandler(handler)
-
-load_dotenv()
-
-reddit = praw.Reddit(
-    check_for_async=True,
-    client_id=environ.get("CLIENT_ID"),
-    client_secret=environ.get("CLIENT_SECRET"),
-    user_agent="reHistory:v0.0 (by /u/r48patel at {})".format(datetime.datetime.now()),
-)
 
 
 class Subreddit:
@@ -163,57 +141,5 @@ def get_comments(user, after=''):
     return subreddit_comments_dict
 
 
-def get_comments_praw(user, debug=logging.INFO):
-    user = reddit.redditor(user)
-    comments = user.comments.new(limit=None)
-    subreddit_comments_dict = {}
-    for comment in comments:
-        # subreddit = Subreddit(comment.subreddit.display_name, comment.subreddit.public_description)
-        subreddit = comment.subreddit.display_name
-        subreddit_comments_dict.setdefault(subreddit, [])
-        submission_title = comment.submission.title
-        comment_parent_id = comment.parent_id
-        comment_parent_comment = None
-        comment_is_reply = False
-        if comment_parent_id.startswith('t1'):
-            parent_comment = reddit.comment(comment_parent_id)
-            comment_parent_comment = Comment(
-                parent_comment.name,
-                parent_comment.created_utc,
-                submission_title,
-                parent_comment.body,
-                parent_comment.body_html,
-                parent_comment.permalink,
-                False,
-                None
-            )
-            comment_is_reply = True
-
-        comment = Comment(
-            comment.name,
-            comment.created_utc,
-            submission_title,
-            comment.body,
-            comment.body_html,
-            comment.permalink,
-            comment_is_reply,
-            comment_parent_comment
-        )
-        print("get_comments_praw.body_html: " + comment.body_html)
-        subreddit_comments_dict[subreddit].append(comment)
-
-    if debug == logging.DEBUG:
-        for subreddit in subreddit_comments_dict.keys():
-            print(subreddit)
-            print(subreddit_comments_dict[subreddit])
-            print()
-
-    return subreddit_comments_dict
-
-
 if __name__ == '__main__':
     comment_list = get_comments('r48patel')
-    # for comment in comment_list['formula1']:
-    #     print(comment, comment.body_html)
-    # for subreddit in comment_list.keys():
-    #     print("{} - {}".format(subreddit, len(comment_list[subreddit])))

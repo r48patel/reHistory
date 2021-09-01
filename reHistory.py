@@ -44,17 +44,20 @@ class Subreddit:
     def __repr__(self):
         return self.display_name
 
+
 class ParentComment:
     def __init__(self, url, comment_title):
         self.url = url
         self.comment_title = comment_title
+        self.comment = None
 
-    def get_comment(self):
+    def populate_comment(self):
         # print(self.url.result().json())
         for result in self.url.result().json():
             if result['data']['children'][0]['kind'] == 't1':
                 parent_comment_data = result['data']['children'][0]['data']
-                return Comment(
+                self.comment = Comment(
+                    parent_comment_data['name'],
                     parent_comment_data['created_utc'],
                     self.comment_title,
                     parent_comment_data['body'],
@@ -64,8 +67,16 @@ class ParentComment:
                     None
                 )
 
+    def get_comment(self):
+        if not self.comment:
+            self.populate_comment()
+
+        return self.comment
+
+
 class Comment:
-    def __init__(self, created, thread_title, body, body_html, link, is_reply, parent_comment):
+    def __init__(self, name, created, thread_title, body, body_html, link, is_reply, parent_comment):
+        self.name = name
         self.created = created
         self.thread_title = thread_title
         self.body = body
@@ -122,6 +133,7 @@ def get_comments(user, after=''):
             )
 
         comment = Comment(
+            comment_data['name'],
             comment_data['created_utc'],
             comment_title,
             comment_data['body'],
@@ -163,6 +175,7 @@ def get_comments_praw(user, debug=logging.INFO):
         if comment_parent_id.startswith('t1'):
             parent_comment = reddit.comment(comment_parent_id)
             comment_parent_comment = Comment(
+                parent_comment.name,
                 parent_comment.created_utc,
                 submission_title,
                 parent_comment.body,
@@ -174,6 +187,7 @@ def get_comments_praw(user, debug=logging.INFO):
             comment_is_reply = True
 
         comment = Comment(
+            comment.name,
             comment.created_utc,
             submission_title,
             comment.body,

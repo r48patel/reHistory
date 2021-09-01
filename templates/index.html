@@ -31,9 +31,20 @@
 						{% for comment in info[subreddit] %}
 						<h3 class="thread_title">{{ comment.thread_title }}</h3>
 						{% if comment.is_reply %}
-						<pre class="parent_comment">
-							<code>{{comment.parent_comment.get_comment().body_html|safe}}</code>
-						</pre>
+						<div class="accordion accordion-flush" id="div-{{ comment.parent_comment.get_comment().name }}">
+							<div class="content">
+								<p class="accordion-header" id="heading-{{ comment.parent_comment.get_comment().name }}">
+									<sup>
+										<a class="small" data-bs-toggle="collapse" href="#{{ comment.parent_comment.get_comment().name }}" role="button" aria-expanded="false" aria-controls="{{ comment.parent_comment.get_comment().name }}">
+										Parent Comment
+										</a>
+									</sup>
+								</p>
+								<div id="{{ comment.parent_comment.get_comment().name }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ comment.parent_comment.get_comment().name }}" data-bs-parent="#div-{{ comment.parent_comment.get_comment().name }}">
+									<blockquote>{{ comment.parent_comment.get_comment().body_html|safe }}</blockquote>
+								</div>
+							</div>
+						</div>
 						{% endif %}
 						<a href="{{ comment.link}}">
 							<p class="comment">{{ comment.body_html|safe }}</p>
